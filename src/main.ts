@@ -59,5 +59,7 @@ function postCommitMessage(commit: Commit): void {
 
 function postMessage(message: string): void {
     const messagesUrl = getInput('messages_url')
+    console.log("Messages URL:", messagesUrl);
+    console.log("Content:", JSON.stringify(message));
     execSync(`curl -d content=${JSON.stringify(message)} ${messagesUrl}`)
 }
