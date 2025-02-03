@@ -20,7 +20,7 @@ export async function run(): Promise<void> {
 
 function postJobFailureMessage(): void {
     const { payload } = context
-    const headCommit: Commit = payload.head_commit
+    const headCommit = getHeadCommit(payload)
     const runName = headCommit.message.split('\n\n')[0]
     const header = `❌ <b>${runName}</b>`
     const runLink = `<a href="${payload.repository?.html_url}/actions/runs/${context.runId}">Job failed</a>`
@@ -62,4 +62,8 @@ function postMessage(message: string): void {
     console.log("Messages URL:", messagesUrl);
     console.log("Content:", JSON.stringify(message));
     execSync(`curl -d content=${JSON.stringify(message)} ${messagesUrl}`)
+}
+
+function getHeadCommit(payload: any): Commit {
+    return payload.head_commit ?? payload.workflow_run.head_commit
 }

@@ -51,7 +51,7 @@ describe('Campfire GitHub Action', () => {
         expect(execSync).toHaveBeenCalledTimes(2)
 
         const expectedCall1 = `
-curl -d "<a href=\\"https://github.com/shane-lamb\\">shane-lamb</a> committed 
+curl -d content="<a href=\\"https://github.com/shane-lamb\\">shane-lamb</a> committed 
 <a href=\\"https://commit_1_url\\">7b94481</a> to 
 <a href=\\"https://github.com/shane-lamb/campfire-notify-action\\">shane-lamb/campfire-notify-action</a>:
 <br/><br/><b>commit 1 message</b>" 
@@ -63,7 +63,7 @@ https://campfire.domain
         expect(calledWith(execSync)).toEqual(expectedCall1)
 
         const expectedCall2 = `
-curl -d "<a href=\\"https://github.com/shane-lamb\\">shane-lamb</a> committed 
+curl -d content="<a href=\\"https://github.com/shane-lamb\\">shane-lamb</a> committed 
 <a href=\\"https://commit_2_url\\">6dc1dbc</a> to 
 <a href=\\"https://github.com/shane-lamb/campfire-notify-action\\">shane-lamb/campfire-notify-action</a>:
 <br/><br/><b>commit 2 title</b><br/><br/>
@@ -83,7 +83,7 @@ https://campfire.domain
         expect(execSync).toHaveBeenCalledTimes(1)
 
         const expectedCall = `
-curl -d "❌ <b>commit 2 title</b><br/><br/>
+curl -d content="❌ <b>commit 2 title</b><br/><br/>
 <a href=\\"https://github.com/my-org/my-repo/actions/runs/7946222982\\">Job failed</a>: 
 CI → test" 
 https://campfire.domain
