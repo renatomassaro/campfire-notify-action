@@ -28958,7 +28958,7 @@ async function run() {
 exports.run = run;
 function postJobFailureMessage() {
     const { payload } = github_1.context;
-    const headCommit = payload.head_commit;
+    const headCommit = getHeadCommit(payload);
     const runName = headCommit.message.split('\n\n')[0];
     const header = `❌ <b>${runName}</b>`;
     const runLink = `<a href="${payload.repository?.html_url}/actions/runs/${github_1.context.runId}">Job failed</a>`;
@@ -28991,7 +28991,10 @@ function postCommitMessage(commit) {
 }
 function postMessage(message) {
     const messagesUrl = (0, core_1.getInput)('messages_url');
-    (0, child_process_1.execSync)(`curl -d ${JSON.stringify(message)} ${messagesUrl}`);
+    (0, child_process_1.execSync)(`curl -d content=${JSON.stringify(message)} ${messagesUrl}`);
+}
+function getHeadCommit(payload) {
+    return payload.head_commit ?? payload.workflow_run.head_commit;
 }
 
 
@@ -30896,7 +30899,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(2186);
 const main_1 = __nccwpck_require__(399);
 // eslint-disable-next-line github/no-then
-(0, main_1.run)().catch((error) => (0, core_1.setFailed)(error.message));
+(0, main_1.run)().catch((error) => {
+    console.log("Error", error);
+    (0, core_1.setFailed)(error.message);
+});
 
 })();
 

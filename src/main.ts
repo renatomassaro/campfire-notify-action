@@ -5,7 +5,6 @@ import { Commit } from './types'
 
 export async function run(): Promise<void> {
     const template = getInput('template')
-    console.log("Template: ", template)
 
     if (template === 'commit_pushed') {
         postCommitMessages()
@@ -22,7 +21,6 @@ export async function run(): Promise<void> {
 function postJobFailureMessage(): void {
     const { payload } = context
     const headCommit = getHeadCommit(payload)
-    console.log("headCommit: ", headCommit)
     const runName = headCommit.message.split('\n\n')[0]
     const header = `❌ <b>${runName}</b>`
     const runLink = `<a href="${payload.repository?.html_url}/actions/runs/${context.runId}">Job failed</a>`
@@ -61,12 +59,9 @@ function postCommitMessage(commit: Commit): void {
 
 function postMessage(message: string): void {
     const messagesUrl = getInput('messages_url')
-    console.log("Messages URL:", messagesUrl);
-    console.log("Content:", JSON.stringify(message));
     execSync(`curl -d content=${JSON.stringify(message)} ${messagesUrl}`)
 }
 
 function getHeadCommit(payload: any): Commit {
-    console.log("Payload:", payload)
     return payload.head_commit ?? payload.workflow_run.head_commit
 }
